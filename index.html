@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Menu Digital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<!-- Header: nama cafe, chip nomor meja (muncul jika dibuka dari QR), tombol tema gelap/terang -->
+<header class="top"><div class="wrap">
+  <div class="top-row">
+    <div><div class="brand" id="cafeName">Kopi Kita</div><span class="table-chip" id="tableChip" hidden></span></div>
+    <button class="icon-btn" id="themeBtn" aria-label="Ganti tema gelap/terang">🌙</button>
+  </div>
+  <h1 class="tagline">Mau pesan apa hari ini?</h1>
+</div></header>
+
+<!-- Kolom pencarian; hasil langsung berubah saat mengetik -->
+<div class="search"><input id="search" type="search" placeholder="Cari menu, misal: kopi, pedas…" aria-label="Cari menu"></div>
+<!-- Filter kategori dan label — isinya digambar oleh js/app.js -->
+<nav class="chips" id="cats" aria-label="Kategori"></nav>
+<nav class="chips small" id="tags" aria-label="Filter label"></nav>
+<!-- Grid kartu menu — isinya digambar oleh js/app.js (skeleton dulu, lalu data) -->
+<main class="grid" id="grid" aria-live="polite"></main>
+
+<!-- Modal detail menu — dibuka saat kartu diklik -->
+<dialog id="detail"></dialog>
+<!-- Urutan penting: store.js (data) harus dimuat sebelum app.js (tampilan) -->
+<script src="js/store.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

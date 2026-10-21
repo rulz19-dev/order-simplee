@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin — Menu Digital</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<!-- Layar login -->
+<section id="loginView" class="panel login" hidden>
+  <h1 style="margin-bottom:4px">Masuk admin</h1>
+  <p style="color:var(--muted);margin-bottom:16px">Kelola menu cafe kamu di sini.</p>
+  <div class="field"><label for="pw">Kata sandi</label><input id="pw" type="password" autocomplete="current-password"></div>
+  <p id="loginErr" style="color:#d93f3f;font-size:.85rem;margin-bottom:8px" hidden>Kata sandi salah. Coba lagi.</p>
+  <button class="btn" id="loginBtn" style="width:100%">Masuk</button>
+  <p style="margin-top:12px;font-size:.8rem;color:var(--muted)">Sandi awal: <b>admin123</b> — segera ganti di Pengaturan.</p>
+</section>
+
+<!-- Dashboard -->
+<div id="dash" class="wrap" hidden>
+  <div class="admin-bar">
+    <h1>Kelola menu</h1>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <a class="btn ghost" href="index.html" target="_blank">Lihat menu</a>
+      <a class="btn ghost" href="qr.html" target="_blank">QR meja</a>
+      <button class="btn ghost" id="settingsBtn">Pengaturan</button>
+      <button class="btn" id="addBtn">+ Tambah menu</button>
+      <button class="btn ghost" id="logoutBtn">Keluar</button>
+    </div>
+  </div>
+  <!-- Kartu ringkasan statistik (diisi oleh js/admin.js) -->
+  <div class="stats" id="stats"></div>
+  <div class="panel scroll-x">
+    <table class="table"><thead><tr><th></th><th>Nama</th><th>Kategori</th><th>Harga</th><th>Dilihat</th><th>Tersedia</th><th></th></tr></thead>
+    <tbody id="rows"></tbody></table>
+  </div>
+</div>
+
+<!-- Form tambah/edit -->
+<dialog id="formDlg"><form id="form" style="padding:22px">
+  <h2 id="formTitle" style="margin-bottom:14px">Tambah menu</h2>
+  <input type="hidden" id="f-id">
+  <div class="field"><label for="f-name">Nama menu</label><input id="f-name" required maxlength="60"></div>
+  <div class="field"><label for="f-desc">Deskripsi</label><textarea id="f-desc" rows="2" maxlength="160"></textarea></div>
+  <div class="row2">
+    <div class="field"><label for="f-price">Harga (Rp)</label><input id="f-price" type="number" min="0" step="500" required></div>
+    <div class="field"><label for="f-cat">Kategori</label><select id="f-cat"></select></div>
+  </div>
+  <div class="row2">
+    <div class="field"><label for="f-cal">Kalori (kkal)</label><input id="f-cal" type="number" min="0"></div>
+    <div class="field"><label for="f-all">Alergen</label><input id="f-all" placeholder="Susu, gluten…"></div>
+  </div>
+  <div class="row2">
+    <div class="field"><label for="f-emoji">Emoji (jika tanpa foto)</label><input id="f-emoji" maxlength="4"></div>
+    <div class="field"><label for="f-file">Foto menu</label><input id="f-file" type="file" accept="image/*"></div>
+  </div>
+  <div class="field"><label>Label</label><div class="chips small" id="f-tags" style="padding:0;flex-wrap:wrap"></div></div>
+  <label style="display:flex;gap:8px;align-items:center;margin-bottom:16px"><input type="checkbox" id="f-avail" checked> Tersedia</label>
+  <div style="display:flex;gap:8px;justify-content:flex-end">
+    <button type="button" class="btn ghost" id="cancelBtn">Batal</button><button class="btn">Simpan</button>
+  </div>
+</form></dialog>
+
+<!-- Pengaturan -->
+<dialog id="setDlg"><div style="padding:22px">
+  <h2 style="margin-bottom:14px">Pengaturan</h2>
+  <div class="field"><label for="s-name">Nama cafe</label><input id="s-name"></div>
+  <div class="field"><label for="s-pw">Kata sandi admin baru (kosongkan jika tidak diganti)</label><input id="s-pw" type="password"></div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+    <button class="btn ghost sm" id="exportBtn">Ekspor cadangan</button>
+    <button class="btn ghost sm" id="importBtn">Impor cadangan</button>
+    <button class="btn danger sm" id="resetBtn">Reset ke data contoh</button>
+    <input type="file" id="importFile" accept=".json" hidden>
+  </div>
+  <div style="display:flex;gap:8px;justify-content:flex-end">
+    <button class="btn ghost" id="setCancel">Tutup</button><button class="btn" id="setSave">Simpan</button>
+  </div>
+</div></dialog>
+
+<div class="toast" id="toast" role="status"></div>
+<script src="js/store.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

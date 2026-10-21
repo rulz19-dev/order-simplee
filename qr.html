@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QR Meja — Menu Digital</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="admin-bar no-print"><h1>QR code meja</h1><button class="btn" onclick="print()">Cetak semua</button></div>
+  <!-- Form pengaturan QR: tidak ikut tercetak -->
+  <div class="panel no-print">
+    <div class="row2">
+      <div class="field"><label for="base">Alamat website menu (setelah deploy)</label>
+        <input id="base" placeholder="https://namacafe.vercel.app/index.html"></div>
+      <div class="field"><label for="count">Jumlah meja</label><input id="count" type="number" min="1" max="100" value="10"></div>
+    </div>
+    <button class="btn" id="gen">Buat QR</button>
+    <p id="hint" style="margin-top:10px;color:var(--muted);font-size:.85rem">Isi alamat website yang sudah online, bukan alamat localhost, supaya bisa dipindai dari HP pelanggan.</p>
+  </div>
+  <!-- Tempat kartu QR per meja (dibuat oleh script di bawah) -->
+  <div class="qr-grid" id="grid"></div>
+</div>
+<!-- Library QR dari CDN (butuh internet saat membuka halaman ini) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="js/store.js"></script>
+<script>
+/* qr.js — satu QR per meja: <alamat>?meja=N */
+const $ = s => document.querySelector(s);
+$('#base').value = location.protocol.startsWith('http') ? new URL('index.html', location.href).href : '';
+
+$('#gen').onclick = () => {
+  const base = $('#base').value.trim(), n = Math.min(100, Math.max(1, +$('#count').value || 1));
+  if (!base) { $('#hint').textContent = 'Alamat website belum diisi.'; return; }
+  if (typeof QRCode === 'undefined') { $('#hint').textContent = 'Library QR gagal dimuat. Periksa koneksi internet lalu muat ulang.'; return; }
+  const name = Store.esc(Store.getSettings().cafeName);
+  $('#grid').innerHTML = '';
+  for (let i = 1; i <= n; i++) {
+    const card = document.createElement('div'); card.className = 'qr-card';
+    card.innerHTML = `<b>${name}</b><div class="qr"></div><h3>Meja ${i}</h3><small>Pindai untuk lihat menu</small>`;
+    $('#grid').appendChild(card);
+    new QRCode(card.querySelector('.qr'), { text: `${base}?meja=${i}`, width: 150, height: 150 });
+  }
+};
+</script>
+</body>
+</html>
